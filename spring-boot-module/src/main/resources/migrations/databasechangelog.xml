@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd ">
+    <changeSet id="crateTable-item" author="petrikov05@gmail.com">
+        <createTable tableName="item">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(40)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTable-item_details" author="petrikov05@gmail.com">
+        <createTable tableName="item_details">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="true"/>
+            </column>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addForeignKey-item-item_details" author="petrikov05@gmail.com">
+        <addForeignKeyConstraint baseTableName="item_details"
+                                 baseColumnNames="id"
+                                 constraintName="f_key_item_item_details"
+                                 referencedTableName="item"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="createTable-shop" author="petrikov05@gmail.com">
+        <createTable tableName="shop">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTable-relation_item_shop" author="petrikov05@gmail.com">
+        <createTable tableName="relation_item_shop">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="item_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="shop_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addForeignKey-item-relation_item_shop" author="petrikov05@gmail.com">
+        <addForeignKeyConstraint baseTableName="relation_item_shop"
+                                 baseColumnNames="item_id"
+                                 constraintName="f_key_item"
+                                 referencedTableName="item"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="addForeignKey-shop-relation_item_shop" author="petrikov05@gmail.com">
+        <addForeignKeyConstraint baseTableName="relation_item_shop"
+                                 baseColumnNames="shop_id"
+                                 constraintName="f_key_shop"
+                                 referencedTableName="shop"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
